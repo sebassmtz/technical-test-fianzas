@@ -11,12 +11,15 @@ import { OrderService } from '../service/order.service';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Role } from 'src/common/enums/rol.enum';
 
 @Controller('order')
 @ApiTags('Order o Perdido')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  @Auth(Role.USER)
   @Post()
   @ApiOperation({
     summary: 'Crear un pedido',
@@ -41,6 +44,7 @@ export class OrderController {
     return this.orderService.findOne(+id);
   }
 
+  @Auth(Role.USER)
   @Patch(':id')
   @ApiOperation({
     summary: 'Actualizar un pedido por id',
@@ -49,6 +53,7 @@ export class OrderController {
     return this.orderService.update(+id, updateOrderDto);
   }
 
+  @Auth(Role.USER)
   @Delete(':id')
   @ApiOperation({
     summary: 'Eliminar un pedido por id',

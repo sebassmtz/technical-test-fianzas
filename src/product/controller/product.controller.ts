@@ -11,12 +11,15 @@ import { ProductService } from '../service/product.service';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Role } from 'src/common/enums/rol.enum';
 
 @Controller('product')
 @ApiTags('Product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @Auth(Role.USER)
   @Post()
   @ApiOperation({
     summary: 'Create product',
@@ -41,6 +44,7 @@ export class ProductController {
     return this.productService.findOne(+id);
   }
 
+  @Auth(Role.USER)
   @Patch(':id')
   @ApiOperation({
     summary: 'Update product by id',
@@ -49,6 +53,7 @@ export class ProductController {
     return this.productService.update(+id, updateProductDto);
   }
 
+  @Auth(Role.USER)
   @Delete(':id')
   @ApiOperation({
     summary: 'Delete product by id',
