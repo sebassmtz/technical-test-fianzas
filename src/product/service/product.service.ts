@@ -40,7 +40,7 @@ export class ProductService {
   async remove(id: number) {
     const product = await this.productRepository.findOneBy({ id });
     if (!product) {
-      throw new BadRequestException('Product not found');
+      throw new BadRequestException('Product notfound');
     }
     return await this.productRepository.softDelete(id);
   }

@@ -15,10 +15,15 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  //CORS
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .setTitle('Technical test API')
     .setDescription('The technical API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
