@@ -4,12 +4,16 @@ import React from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import { getAllProducts } from "@/actions/products";
-import { GridLoader } from "react-spinners";
-import { Table } from "lucide-react";
 import { TablePreviewProducts } from "@/components/extras/table-products";
+import dynamic from "next/dynamic";
+
+// import { GridLoader } from "react-spinners";
+const GridLoader = dynamic(
+  () => import("react-spinners").then((mod) => mod.GridLoader),
+  { ssr: false }
+);
 
 function ProductsPage() {
-  // Queries
   const {
     isLoading,
     error,
@@ -24,7 +28,7 @@ function ProductsPage() {
       headerLabel=""
       footerLabel="Fianzas"
     >
-      {isLoading  ? (
+      {isLoading ? (
         <div className="flex justify-center items-center">
           <GridLoader
             className="flex justify-center items-center"
