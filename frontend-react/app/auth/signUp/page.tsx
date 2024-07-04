@@ -1,8 +1,7 @@
-import React from 'react'
-
+import { RegisterForm } from '@/components/auth/register-form'
 function SignUpPage() {
   return (
-    <div>SignUpPage</div>
+    <RegisterForm />
   )
 }
 
