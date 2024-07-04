@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionAuthProvider from "@/hooks/SessionAuthProvider";
+import { ModalProviders } from "@/hooks/modal-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SessionAuthProvider>{children}</SessionAuthProvider>
+        <SessionAuthProvider>
+          {children}
+          <ModalProviders />
+        </SessionAuthProvider>
       </body>
     </html>
   );

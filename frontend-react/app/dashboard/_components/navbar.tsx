@@ -14,7 +14,7 @@ function NavBarDash() {
           asChild
           variant={pathname === "/dashboard/products" ? "default" : "outline"}
         >
-          <Link href={"/server"}>Productos</Link>
+          <Link href={"/dashboard/products"}>Productos</Link>
         </Button>
         <Button
           asChild

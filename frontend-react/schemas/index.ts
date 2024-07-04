@@ -9,7 +9,6 @@ export const LoginSchema = z.object({
   }),
 });
 
-// TO DO ...
 export const RegisterSchema = z.object({
   email: z.string().email({
     message: "Email is required",
@@ -29,4 +28,11 @@ export const RegisterSchema = z.object({
       message: "Address is required",
     })
     .optional(),
+});
+
+export const EditProductSchema = z.object({
+  name: z.optional(z.string()),
+  description: z.optional(z.string()),
+  price: z.optional(z.number()),
+  availability: z.optional(z.boolean()),
 });
