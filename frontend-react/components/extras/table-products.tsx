@@ -22,14 +22,16 @@ export function TablePreviewProducts({ data }: TablePreviewProps) {
       </TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">ID del Party</TableHead>
-          <TableHead>ID de la Receta</TableHead>
-          <TableHead>Titulo de la receta</TableHead>
+          <TableHead className="w-[100px]">ID</TableHead>
+          <TableHead className="w-[100px]">Nombre</TableHead>
+          <TableHead>Desc</TableHead>
+          <TableHead>Precio</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {data.map((dataFile) => (
           <TableRow key={dataFile.id}>
+            <TableCell className="font-medium">{dataFile.id}</TableCell>
             <TableCell className="font-medium">{dataFile.name}</TableCell>
             <TableCell>{dataFile.description}</TableCell>
             <TableCell>{dataFile.price}</TableCell>

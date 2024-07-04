@@ -5,26 +5,26 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllProducts } from "@/actions/products";
 import { GridLoader } from "react-spinners";
+import { Table } from "lucide-react";
+import { TablePreviewProducts } from "@/components/extras/table-products";
 
 function ProductsPage() {
   // Queries
-  const { isLoading, error, data } = useQuery({
+  const {
+    isLoading,
+    error,
+    data: product,
+  } = useQuery({
     queryKey: ["products"],
     queryFn: getAllProducts,
   });
-
-  if (isLoading) return "Loading...";
-
-  if (error) return "An error has occurred: " + error.message;
-
-  console.log("Data",data);
 
   return (
     <CardWrapperMain
       headerLabel=""
       footerLabel="Fianzas"
     >
-      {isLoading ? (
+      {isLoading  ? (
         <div className="flex justify-center items-center">
           <GridLoader
             className="flex justify-center items-center"
@@ -33,8 +33,9 @@ function ProductsPage() {
           />
         </div>
       ) : (
-        <div>Ya cargo los Productos</div>
+        <TablePreviewProducts data={product ?? []} />
       )}
+      {error && <div>error.message</div>}
     </CardWrapperMain>
   );
 }
