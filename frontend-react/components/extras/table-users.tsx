@@ -8,22 +8,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Product } from "@/types/product";
+import { User } from "@/types/users";
 
 interface TablePreviewProps {
-  data: Product[];
+  data: User[];
 }
 
-export function TablePreviewProducts({ data }: TablePreviewProps) {
+export function TablePreviewUser({ data }: TablePreviewProps) {
   return (
     <Table>
-      <TableCaption>Productos</TableCaption>
+      <TableCaption>Usuarios</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px]">ID</TableHead>
           <TableHead className="w-[100px]">Nombre</TableHead>
-          <TableHead>Desc</TableHead>
-          <TableHead>Precio</TableHead>
+          <TableHead>Apellido</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Direccion</TableHead>
+          <TableHead>Rol</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -31,9 +33,10 @@ export function TablePreviewProducts({ data }: TablePreviewProps) {
           <TableRow key={dataFile.id}>
             <TableCell className="font-medium">{dataFile.id}</TableCell>
             <TableCell className="font-medium">{dataFile.name}</TableCell>
-            <TableCell>{dataFile.description}</TableCell>
-            <TableCell>{dataFile.price}</TableCell>
-            <TableCell>{dataFile.availability}</TableCell>
+            <TableCell>{dataFile.lastName}</TableCell>
+            <TableCell>{dataFile.email}</TableCell>
+            <TableCell>{dataFile.address}</TableCell>
+            <TableCell>{dataFile.rol}</TableCell>
           </TableRow>
         ))}
       </TableBody>

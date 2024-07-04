@@ -85,7 +85,6 @@ export function LoginForm() {
             form.reset();
             setSuccess(res?.success);
             toast.success("Logged in successfully!");
-            //  push settings
           }
         })
         .catch((e) => {
@@ -139,14 +138,6 @@ export function LoginForm() {
                       disabled={isPending}
                     />
                   </FormControl>
-                  {/* <Button
-                    size="sm"
-                    variant="link"
-                    asChild
-                    className="px-0 font-normal"
-                  >
-                    <Link href="/reset">Forgot password?</Link>
-                  </Button> */}
                   <FormMessage />
                 </FormItem>
               )}

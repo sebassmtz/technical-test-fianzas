@@ -38,7 +38,6 @@ const handler = NextAuth({
   },
   pages: {
     signIn: "/auth/signIn",
-    signOut: "/auth/signOut",
     newUser: "/signUp",
   },
   jwt: {

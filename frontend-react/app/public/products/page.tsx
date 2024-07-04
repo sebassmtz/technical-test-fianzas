@@ -37,7 +37,9 @@ function ProductsPage() {
           />
         </div>
       ) : (
-        <TablePreviewProducts data={product ?? []} />
+        <div className="flex flex-col space-y-2 w-full items-center justify-center overflow-y-auto max-h-[30vh] h-[60vh]">
+          <TablePreviewProducts data={product ?? []} />
+        </div>
       )}
       {error && <div>error.message</div>}
     </CardWrapperMain>
