@@ -1,6 +1,6 @@
 import NavBarMain from "@/components/extras/navbar";
 
-function AuthLayout({ children }: { children: React.ReactNode }) {
+function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <div
       className="h-full flex flex-col gap-y-10 items-center justify-center
@@ -13,4 +13,4 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-export default AuthLayout;
+export default PublicLayout;
