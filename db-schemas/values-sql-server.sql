@@ -1,4 +1,3 @@
--- Insertar datos de prueba en la tabla product
 INSERT INTO [dbo].[product] ([name], [description], [price], [availability], [createdAt], [updatedAt], [deletedAt])
 VALUES
 ('Producto A', 'Descripción A', 19.99, 1, GETDATE(), GETDATE(), NULL),
