@@ -25,18 +25,20 @@
 
 ## Introducción
 
-> .[!IMPORTANT].
+> [!IMPORTANT]
 > Link de la documentacion de los endpoints: [Endpoints](https://technical-test-fianzas-development.up.railway.app/docs#/)
+
+> [!IMPORTANT]
 > Link del despliegue en Vercel: [Frontend](https://technical-test-fianzas-frontend.vercel.app/)
 
-> .[!IMPORTANT].
+> [!IMPORTANT]
 > Credenciales para ingresar
 > Usuario: usuario@gmail.com
-> Contraseña: 123456
+> Contraseña: **123456**
 
 Este proyecto es una prueba técnica para la empresa Fianzas. El proyecto se divide en dos partes, una parte backend y una parte frontend. El backend se desarrolló con Nest.js y el frontend con Next.js. La base de datos se utilizó PostgreSQL y SQL Server. La infraestructura de despliegue se realizó en Vercel y Railway.
 
-> .[!NOTE].
+> [!NOTE]
 > Para el despliegue de la aplicacion se utilizo Vercel y Railway, para el backend y frontend respectivamente.
 
 ## backend
