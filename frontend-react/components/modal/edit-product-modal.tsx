@@ -18,17 +18,18 @@ import {
   FormDescription,
   FormMessage,
 } from "@/components/ui/form";
-import { FormError } from "@/components/extras/form-error";
-import { FormSucess } from "@/components/extras/form-sucess";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 
 import { EditProductSchema } from "@/schemas";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { editProductAPI } from "@/actions/products";
 
 function EditProductModal() {
-  const [isPending, startTransition] = useTransition();
+  const queryClient = useQueryClient();
 
   const { isOpen, close } = useStoreEditModal((state) => ({
     isOpen: state.isOpen,
@@ -43,10 +44,10 @@ function EditProductModal() {
   const form = useForm<z.infer<typeof EditProductSchema>>({
     resolver: zodResolver(EditProductSchema),
     defaultValues: {
-      name: productStore.name || undefined,
-      description: productStore.description || undefined,
-      price: productStore.price || undefined,
-      availability: productStore.availability || undefined,
+      name: productStore.name || "",
+      description: productStore.description || "",
+      price: String(productStore.price) || "",
+      availability: productStore.availability || false,
     },
   });
 
@@ -55,16 +56,26 @@ function EditProductModal() {
     form.reset({
       name: productStore.name || "",
       description: productStore.description || "",
-      price: productStore.price || 0,
+      price: String(productStore.price) || "",
       availability: productStore.availability || false,
     });
   }, [productStore, form]);
 
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
+  const { isPending, mutate } = useMutation({
+    mutationFn: editProductAPI,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Producto agregado correctamente.");
+      close();
+    },
+  });
 
   const onSubmit = (values: z.infer<typeof EditProductSchema>) => {
-    console.log(values);
+    const formattedValues = {
+      ...values,
+      price: Number(values.price),
+    };
+    mutate({ ...formattedValues, id: productStore.id });
   };
 
   return (
@@ -164,8 +175,6 @@ function EditProductModal() {
               )}
             />
           </div>
-          <FormError message={error} />
-          <FormSucess message={success} />
           <Button
             type="submit"
             disabled={isPending}

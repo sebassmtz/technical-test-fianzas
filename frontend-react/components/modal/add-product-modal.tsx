@@ -14,8 +14,6 @@ import {
   FormDescription,
   FormMessage,
 } from "@/components/ui/form";
-import { FormError } from "@/components/extras/form-error";
-import { FormSucess } from "@/components/extras/form-sucess";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,8 +42,6 @@ function AddProductModal() {
     },
   });
 
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
 
   const { isPending, mutate } = useMutation({
     mutationFn: addProduct,
@@ -161,8 +157,6 @@ function AddProductModal() {
               )}
             />
           </div>
-          <FormError message={error} />
-          <FormSucess message={success} />
           <Button
             type="submit"
             disabled={isPending}

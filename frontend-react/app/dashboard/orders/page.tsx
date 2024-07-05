@@ -46,10 +46,10 @@ function OrdersPageDash() {
                           key={product.id}
                           className="mt-2"
                         >
-                          <p>Producto: {product.product.name}</p>
-                          <p>Cantidad: {product.quantity}</p>
-                          <p>Comentario: {product.comment}</p>
-                          <p>Precio: ${product.product.price}</p>
+                          <p>Producto: {product?.product?.name}</p>
+                          <p>Cantidad: {product?.quantity}</p>
+                          <p>Comentario: {product?.comment}</p>
+                          <p>Precio: ${product?.product?.price}</p>
                         </div>
                       ))}
                     </div>
