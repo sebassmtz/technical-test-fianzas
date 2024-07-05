@@ -17,7 +17,6 @@ import { Button } from "@/components/ui/button";
 import { CardWrapper } from "@/components/extras/card-wrapper";
 import { FormError } from "@/components/extras/form-error";
 import { FormSucess } from "@/components/extras/form-sucess";
-import { useSearchParams } from "next/navigation";
 
 import { LoginSchema } from "@/schemas";
 import { signIn, useSession } from "next-auth/react";
@@ -27,15 +26,11 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 export function LoginForm() {
-  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
-
-  // Quitar esto
-  const [showTwoFactor, setShowTwoFactor] = useState(false);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -57,7 +52,6 @@ export function LoginForm() {
       return { error: "Invalid fields" };
     }
     const { email, password } = validatedFields.data;
-    console.log(email, password);
     const responseNextAuth = await signIn("credentials", {
       email,
       password,
@@ -85,7 +79,6 @@ export function LoginForm() {
             form.reset();
             setSuccess(res?.success);
             toast.success("Logged in successfully!");
-            //  push settings
           }
         })
         .catch((e) => {
@@ -139,14 +132,6 @@ export function LoginForm() {
                       disabled={isPending}
                     />
                   </FormControl>
-                  {/* <Button
-                    size="sm"
-                    variant="link"
-                    asChild
-                    className="px-0 font-normal"
-                  >
-                    <Link href="/reset">Forgot password?</Link>
-                  </Button> */}
                   <FormMessage />
                 </FormItem>
               )}

@@ -4,20 +4,24 @@ import React from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import { getAllProducts } from "@/actions/products";
-import { GridLoader } from "react-spinners";
+import { TablePreviewProducts } from "@/components/extras/table-products";
+import dynamic from "next/dynamic";
+
+// import { GridLoader } from "react-spinners";
+const GridLoader = dynamic(
+  () => import("react-spinners").then((mod) => mod.GridLoader),
+  { ssr: false }
+);
 
 function ProductsPage() {
-  // Queries
-  const { isLoading, error, data } = useQuery({
+  const {
+    isLoading,
+    error,
+    data: product,
+  } = useQuery({
     queryKey: ["products"],
     queryFn: getAllProducts,
   });
-
-  if (isLoading) return "Loading...";
-
-  if (error) return "An error has occurred: " + error.message;
-
-  console.log("Data",data);
 
   return (
     <CardWrapperMain
@@ -33,8 +37,11 @@ function ProductsPage() {
           />
         </div>
       ) : (
-        <div>Ya cargo los Productos</div>
+        <div className="flex flex-col space-y-2 w-full items-center justify-center overflow-y-auto max-h-[30vh] h-[60vh]">
+          <TablePreviewProducts data={product ?? []} />
+        </div>
       )}
+      {error && <div>error.message</div>}
     </CardWrapperMain>
   );
 }
