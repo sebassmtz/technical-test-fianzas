@@ -1,10 +1,6 @@
 "use client";
-import React, { useTransition, useState, useEffect } from "react";
+import React, { useTransition, useState } from "react";
 import { Modal } from "@/components/ui/modal";
-import {
-  useStoreEditModal,
-  useStoreEditProduct,
-} from "@/hooks/use-store-modal";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,52 +20,55 @@ import { FormSucess } from "@/components/extras/form-sucess";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { EditProductSchema } from "@/schemas";
+import { AddProductSchema } from "@/schemas";
+import { useStoreAddModal } from "@/hooks/use-store-modal";
+import { Switch } from "@/components/ui/switch";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addProduct } from "@/actions/products";
+import { toast } from "sonner";
 
-function EditModal() {
-  const [isPending, startTransition] = useTransition();
-
-  const { isOpen, close } = useStoreEditModal((state) => ({
+function AddProductModal() {
+  const queryClient = useQueryClient();
+  const { isOpen, close } = useStoreAddModal((state) => ({
     isOpen: state.isOpen,
     close: state.close,
   }));
 
-  const { productStore, setProductStore } = useStoreEditProduct((state) => ({
-    productStore: state.productStore,
-    setProductStore: state.setProductStore,
-  }));
-
-  const form = useForm<z.infer<typeof EditProductSchema>>({
-    resolver: zodResolver(EditProductSchema),
+  const form = useForm<z.infer<typeof AddProductSchema>>({
+    resolver: zodResolver(AddProductSchema),
     defaultValues: {
-      name: productStore.name || undefined,
-      description: productStore.description || undefined,
-      price: productStore.price || undefined,
-      availability: productStore.availability || undefined,
+      name: "",
+      description: "",
+      price: "",
+      availability: false,
     },
   });
-
-  useEffect(() => {
-    // Reset form values when productStore changes
-    form.reset({
-      name: productStore.name || "",
-      description: productStore.description || "",
-      price: productStore.price || 0,
-      availability: productStore.availability || false,
-    });
-  }, [productStore, form]);
 
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
 
-  const onSubmit = (values: z.infer<typeof EditProductSchema>) => {
-    console.log(values);
+  const { isPending, mutate } = useMutation({
+    mutationFn: addProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Producto agregado correctamente.");
+      form.reset();
+      close();
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof AddProductSchema>) => {
+    const formattedValues = {
+      ...values,
+      price: Number(values.price),
+    };
+    mutate(formattedValues);
   };
 
   return (
     <Modal
-      title="Editar Producto"
-      description="Completa los campos para editar el producto"
+      title="Agregar Producto"
+      description="Agrega un nuevo producto a la tienda."
       isOpen={isOpen}
       onClose={close}
     >
@@ -128,9 +127,33 @@ function EditModal() {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="producto"
                       type="number"
                       disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div>
+            <FormField
+              control={form.control}
+              name="availability"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">
+                  <div className="space-y-0.5">
+                    <FormLabel>Disponibilidad</FormLabel>
+                    <FormDescription>
+                      Activar o desactivar la disponibilidad del producto.
+                    </FormDescription>
+                  </div>
+
+                  <FormControl>
+                    <Switch
+                      disabled={isPending}
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -144,7 +167,7 @@ function EditModal() {
             type="submit"
             disabled={isPending}
           >
-            Actualizar
+            Agregar
           </Button>
         </form>
       </Form>
@@ -152,4 +175,4 @@ function EditModal() {
   );
 }
 
-export default EditModal;
+export default AddProductModal;

@@ -15,6 +15,11 @@ import {
   useStoreEditModal,
   useStoreEditProduct,
 } from "@/hooks/use-store-modal";
+import { AlertModal } from "@/components/modal/alert-modal";
+import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteProduct } from "@/actions/products";
+import { toast } from "sonner";
 
 interface TablePreviewProps {
   data: Product[];
@@ -22,7 +27,7 @@ interface TablePreviewProps {
 }
 
 export function TablePreviewProducts({ data, showActions }: TablePreviewProps) {
-  // Agregar el id de la fila y el setID de la fila en zustand
+  const queryClient = useQueryClient();
   const { open: openEditModal } = useStoreEditModal((state) => ({
     open: state.open,
   }));
@@ -31,18 +36,47 @@ export function TablePreviewProducts({ data, showActions }: TablePreviewProps) {
     productStore: state.productStore,
     setProductStore: state.setProductStore,
   }));
-  
   const handleEditProduct = (product: Product) => {
     setProductStore(product);
     openEditModal();
   };
 
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [idProduct, setIdProduct] = useState<number>(0);
+
   const handleDeleteProduct = (id: number) => {
-    console.log(`Delete product with id: ${id}`);
+    setOpen(true);
+    setIdProduct(id);
+  };
+
+  const availability = (availability: boolean) => {
+    return availability ? "Disponible" : "No disponible";
+  };
+
+  const deleteProductMutation = useMutation({
+    mutationFn: deleteProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Producto eliminado correctamente.");
+      setOpen(false);
+      setLoading(false);
+    }
+  })
+
+  const onDelete = () => {
+    setLoading(true);
+    deleteProductMutation.mutate(idProduct);
   };
 
   return (
     <>
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onDelete}
+        loading={loading}
+      />
       <Table>
         <TableCaption>Productos</TableCaption>
         <TableHeader>
@@ -51,6 +85,7 @@ export function TablePreviewProducts({ data, showActions }: TablePreviewProps) {
             <TableHead className="w-[100px]">Nombre</TableHead>
             <TableHead>Desc</TableHead>
             <TableHead>Precio</TableHead>
+            <TableHead>Disponibilidad</TableHead>
             {showActions && <TableHead>Acciones</TableHead>}
           </TableRow>
         </TableHeader>
@@ -61,7 +96,7 @@ export function TablePreviewProducts({ data, showActions }: TablePreviewProps) {
               <TableCell className="font-medium">{dataFile.name}</TableCell>
               <TableCell>{dataFile.description}</TableCell>
               <TableCell>{dataFile.price}</TableCell>
-              <TableCell>{dataFile.availability}</TableCell>
+              <TableCell>{availability(dataFile.availability)}</TableCell>
               {showActions && (
                 <TableCell>
                   <div className="flex gap-2">
@@ -74,6 +109,7 @@ export function TablePreviewProducts({ data, showActions }: TablePreviewProps) {
                     <Button
                       variant="outline"
                       onClick={() => handleDeleteProduct(dataFile.id)}
+                      disabled={loading}
                     >
                       Eliminar
                     </Button>

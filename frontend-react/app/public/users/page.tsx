@@ -19,7 +19,7 @@ function UsersPage() {
     error,
     data: users,
   } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["users"],
     queryFn: getAllUsers,
   });
 

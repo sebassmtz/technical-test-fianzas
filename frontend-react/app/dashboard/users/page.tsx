@@ -18,7 +18,7 @@ function UserPageDash() {
   return (
     <Card className="w-[800px]">
       <CardHeader>
-        <p className="text-2xl font-semibold text-center">Productos</p>
+        <p className="text-2xl font-semibold text-center">Usuarios</p>
       </CardHeader>
       <CardContent className="space-y-4 ">
         <div className="overflow-y-auto max-h-[40vh] h-[70vh]">

@@ -11,6 +11,14 @@ function NavBarDash() {
     <nav className="bg-secondary flex justify-between items-center p-4 w-[600px] shadow-sm rounded-xl">
       <div className="flex gap-2">
         <Button
+          size={"lg"}
+          asChild
+          variant={pathname === "/dashboard" ? "default" : "outline"}
+          className="w-full sm:w-auto  p-4"
+        >
+          <Link href={"/dashboard"}>Home</Link>
+        </Button>
+        <Button
           asChild
           variant={pathname === "/dashboard/products" ? "default" : "outline"}
         >

@@ -6,7 +6,12 @@ import { Button } from "@/components/ui/button";
 import { TablePreviewProducts } from "@/components/extras/table-products";
 import { useQuery } from "@tanstack/react-query";
 import { getAllProducts } from "@/actions/products";
+import { useStoreAddModal } from "@/hooks/use-store-modal";
 function ProductPageDash() {
+  const { open: openAddModal } = useStoreAddModal((state) => ({
+    open: state.open,
+  }));
+
   const {
     isLoading,
     error,
@@ -15,6 +20,8 @@ function ProductPageDash() {
     queryKey: ["products"],
     queryFn: getAllProducts,
   });
+
+
   return (
     <Card className="w-[800px]">
       <CardHeader>
@@ -22,7 +29,7 @@ function ProductPageDash() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-row items-center justify-center rounded-lg border p-3 shadow-md">
-          <Button>Agregar Producto</Button>
+          <Button onClick={() => openAddModal()}>Agregar Producto</Button>
         </div>
         {error && <div>error.message</div>}
         {isLoading ? (
